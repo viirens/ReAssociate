@@ -13,6 +13,8 @@ public class GridManager : MonoBehaviour
     {
         gridCells = new GridCell[gridWidth, gridHeight];
         GenerateGrid();
+        // SetPlayerPosition();
+        // Debug.Log($"Player position: {currentPlayerPosition}");
     }
 
     void GenerateGrid()
@@ -68,6 +70,23 @@ public class GridManager : MonoBehaviour
     {
         return position.x >= 0 && position.x < gridWidth &&
                position.y >= 0 && position.y < gridHeight;
+    }
+
+    public Vector2Int GetPlayerPosition()
+    {
+        // loop through all cells and find the one that has the player
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int z = 0; z < gridHeight; z++)
+            {
+                if (gridCells[x, z].item != null && gridCells[x, z].item.name == "Player(Clone)")
+                {
+                    Debug.Log($"Player found at {x}, {z}");
+                    return new Vector2Int(x, z);
+                }
+            }
+        }
+        return new Vector2Int(-1, -1);
     }
 }
 

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float moveSpeed = 2f;
 
+    public ArrowPlacer arrowPlacer;
     private GridManager gridManager;
     private Vector2Int currentGridPosition;
     private Vector3 targetPosition;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
+        arrowPlacer = gridManager.GetComponent<ArrowPlacer>();
 
         currentGridPosition = new Vector2Int(
             Mathf.RoundToInt(transform.position.x / gridManager.cellSize),
@@ -92,8 +94,9 @@ public class PlayerController : MonoBehaviour
             transform.position.y,
             currentGridPosition.y * gridManager.cellSize
         );
-        isMoving = true;
+        
         animator.SetFloat("Speed", 1);
+        isMoving = true;
 
         Vector3 direction = new Vector3(input.x, 0, input.y);
         if (direction != Vector3.zero)
@@ -102,6 +105,7 @@ public class PlayerController : MonoBehaviour
         }
 
         gridManager.PlaceItemAt(currentGridPosition, gameObject);
+        arrowPlacer.MoveArrowPointsWithPlayer(input);
     }
 
     void MoveToTarget()
