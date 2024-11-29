@@ -23,15 +23,15 @@ public class ItemPlacer : MonoBehaviour
 
     void PlacePlayer()
     {
-        if (playerStartPosition.x >= 0 && playerStartPosition.x < gridManager.gridWidth &&
-            playerStartPosition.y >= 0 && playerStartPosition.y < gridManager.gridHeight)
+        if (gridManager.IsPositionValid(playerStartPosition))
         {
             Vector3 playerPosition = new Vector3(
                 playerStartPosition.x * gridManager.cellSize,
                 0,
                 playerStartPosition.y * gridManager.cellSize
             );
-            Instantiate(playerPrefab, playerPosition, Quaternion.identity);
+            GameObject player = Instantiate(playerPrefab, playerPosition, Quaternion.identity);
+            gridManager.PlaceItemAt(playerStartPosition, player);
         }
         else
         {
@@ -43,15 +43,15 @@ public class ItemPlacer : MonoBehaviour
     {
         foreach (ItemData itemData in itemsToPlace)
         {
-            if (itemData.gridPosition.x >= 0 && itemData.gridPosition.x < gridManager.gridWidth &&
-                itemData.gridPosition.y >= 0 && itemData.gridPosition.y < gridManager.gridHeight)
+            if (gridManager.IsPositionValid(itemData.gridPosition))
             {
                 Vector3 itemPosition = new Vector3(
                     itemData.gridPosition.x * gridManager.cellSize,
                     0,
                     itemData.gridPosition.y * gridManager.cellSize
                 );
-                Instantiate(itemData.itemPrefab, itemPosition, Quaternion.identity);
+                GameObject item = Instantiate(itemData.itemPrefab, itemPosition, Quaternion.identity);
+                gridManager.PlaceItemAt(itemData.gridPosition, item);
             }
             else
             {

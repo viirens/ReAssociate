@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 4371036996851068408}
   _rb: {fileID: 7739484512559074163}
-  moveSpeed: 6
+  moveSpeed: 8
 --- !u!1001 &7909340556179099753
 PrefabInstance:
   m_ObjectHideFlags: 0

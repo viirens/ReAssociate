@@ -41,19 +41,19 @@ public class PlayerController : MonoBehaviour
     {
         Vector2Int input = Vector2Int.zero;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             input = new Vector2Int(0, 1);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             input = new Vector2Int(0, -1);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             input = new Vector2Int(-1, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             input = new Vector2Int(1, 0);
         }
@@ -62,22 +62,18 @@ public class PlayerController : MonoBehaviour
         {
             Vector2Int newGridPosition = currentGridPosition + input;
 
-            if (newGridPosition.x >= 0 && newGridPosition.x < gridManager.gridWidth &&
-                newGridPosition.y >= 0 && newGridPosition.y < gridManager.gridHeight)
+            if (gridManager.IsPositionValid(newGridPosition))
             {
-                currentGridPosition = newGridPosition;
-                targetPosition = new Vector3(
-                    currentGridPosition.x * gridManager.cellSize,
-                    transform.position.y,
-                    currentGridPosition.y * gridManager.cellSize
-                );
-                isMoving = true;
-                animator.SetFloat("Speed", 1);
+                GridCell targetCell = gridManager.GetGridCell(newGridPosition);
 
-                Vector3 direction = new Vector3(input.x, 0, input.y);
-                if (direction != Vector3.zero)
+                if (targetCell.isOccupied)
                 {
-                    transform.rotation = Quaternion.LookRotation(direction);
+                    Debug.Log($"Cell at {newGridPosition} is occupied by {targetCell.item.name}");
+                    // Implement interaction logic with the item here
+                }
+                else
+                {
+                    MoveToNewPosition(newGridPosition, input);
                 }
             }
             else
@@ -85,6 +81,27 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("Speed", 0);
             }
         }
+    }
+
+    void MoveToNewPosition(Vector2Int newGridPosition, Vector2Int input)
+    {
+        gridManager.RemoveItemAt(currentGridPosition);
+        currentGridPosition = newGridPosition;
+        targetPosition = new Vector3(
+            currentGridPosition.x * gridManager.cellSize,
+            transform.position.y,
+            currentGridPosition.y * gridManager.cellSize
+        );
+        isMoving = true;
+        animator.SetFloat("Speed", 1);
+
+        Vector3 direction = new Vector3(input.x, 0, input.y);
+        if (direction != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        gridManager.PlaceItemAt(currentGridPosition, gameObject);
     }
 
     void MoveToTarget()
