@@ -81,12 +81,17 @@ public class GridManager : MonoBehaviour
             {
                 if (gridCells[x, z].item != null && gridCells[x, z].item.name == "Player(Clone)")
                 {
-                    Debug.Log($"Player found at {x}, {z}");
+                    // Debug.Log($"Player found at {x}, {z}");
                     return new Vector2Int(x, z);
                 }
             }
         }
         return new Vector2Int(-1, -1);
+    }
+
+    public bool PointIsBeyondGrid(Vector2Int point)
+    {
+        return point.x < 0 || point.x >= gridWidth || point.y < 0 || point.y >= gridHeight;
     }
 }
 
