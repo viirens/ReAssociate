@@ -572,8 +572,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 1094528118}
   passThroughPoints:
-  - gridPosition: {x: 3, y: 0}
+  - gridPosition: {x: -1, y: -1}
+  - gridPosition: {x: 2, y: 0}
   - gridPosition: {x: 1, y: 0}
+  - gridPosition: {x: 1, y: 1}
   - gridPosition: {x: 1, y: 2}
   - gridPosition: {x: 0, y: 2}
   lineRenderer: {fileID: 1094528120}
