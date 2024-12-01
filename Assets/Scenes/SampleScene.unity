@@ -448,13 +448,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 1094528118}
   playerPrefab: {fileID: 3489227537269484220, guid: 71aa867bad11d441ab5d14e95e38f186, type: 3}
-  playerStartPosition: {x: 3, y: 0}
+  playerStartPosition: {x: 3, y: 3}
   itemsToPlace:
   - itemPrefab: {fileID: 8704931773044999930, guid: e6c3a0d790c204969b7df25f089d4065, type: 3}
-    gridPosition: {x: 2, y: 0}
+    gridPosition: {x: 0, y: 0}
+  - itemPrefab: {fileID: 8704931773044999930, guid: e6c3a0d790c204969b7df25f089d4065, type: 3}
+    gridPosition: {x: 2, y: 2}
+  - itemPrefab: {fileID: 6969036589773672381, guid: df7567675df654b8d8d3c7a079a9cb8a, type: 3}
+    gridPosition: {x: 3, y: 0}
   - itemPrefab: {fileID: 8704931773044999930, guid: e6c3a0d790c204969b7df25f089d4065, type: 3}
     gridPosition: {x: 1, y: 2}
-  - itemPrefab: {fileID: 6969036589773672381, guid: df7567675df654b8d8d3c7a079a9cb8a, type: 3}
+  - itemPrefab: {fileID: 8704931773044999930, guid: e6c3a0d790c204969b7df25f089d4065, type: 3}
     gridPosition: {x: 0, y: 3}
 --- !u!120 &1094528120
 LineRenderer:
@@ -573,11 +577,14 @@ MonoBehaviour:
   gridManager: {fileID: 1094528118}
   passThroughPoints:
   - gridPosition: {x: -1, y: -1}
-  - gridPosition: {x: 2, y: 0}
-  - gridPosition: {x: 1, y: 0}
+  - gridPosition: {x: 3, y: 2}
+  - gridPosition: {x: 3, y: 1}
+  - gridPosition: {x: 2, y: 1}
   - gridPosition: {x: 1, y: 1}
   - gridPosition: {x: 1, y: 2}
-  - gridPosition: {x: 0, y: 2}
+  - gridPosition: {x: 1, y: 3}
+  - gridPosition: {x: 2, y: 3}
+  - gridPosition: {x: 3, y: 3}
   lineRenderer: {fileID: 1094528120}
 --- !u!1 &1599528611
 GameObject:

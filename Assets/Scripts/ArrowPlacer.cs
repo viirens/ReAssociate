@@ -17,7 +17,7 @@ public class ArrowPlacer : MonoBehaviour
     {
         PlaceArrow();
         Vector2Int playerPosition = gridManager.GetPlayerPosition();
-        Debug.Log($"Player position: {playerPosition}");
+        // Debug.Log($"Player position: {playerPosition}");
     }
 
 
@@ -84,7 +84,7 @@ public class ArrowPlacer : MonoBehaviour
     // happens on space button press
     public void ShortenArrow()
     {
-        
+
         passThroughPoints[0].gridPosition = passThroughPoints[1].gridPosition;
         passThroughPoints.RemoveAt(1);
         lineRenderer.positionCount = passThroughPoints.Count;

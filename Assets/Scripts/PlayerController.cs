@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private Vector2Int currentGridPosition;
     private Vector3 targetPosition;
     private bool isMoving = false;
-
+    private bool isMovingAlongArrow = false;
     void Start()
     {
         gridManager = FindObjectOfType<GridManager>();
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
 
                 if (targetCell.isOccupied)
                 {
-                    Debug.Log($"Cell at {newGridPosition} is occupied by {targetCell.item.name}");
+                    // Debug.Log($"Cell at {newGridPosition} is occupied by {targetCell.item.name}");
                     // Implement interaction logic with the item here
                     // if (targetCell.item.name == "Goal(Clone)" && arrowPlacer.passThroughPoints.Count == 1)
                     // {
@@ -99,12 +99,16 @@ public class PlayerController : MonoBehaviour
 
     void MoveToNewPosition(Vector2Int newGridPosition, Vector2Int input)
     {
-        if (arrowPlacer.ArrowWillBeOutOfBounds(input, newGridPosition))
+        isMovingAlongArrow = false;
+
+        if (arrowPlacer.ArrowWillBeOutOfBounds(input, newGridPosition) || gridManager.GetGridCell(newGridPosition).alreadyVisited)
         {
-            Debug.Log("Arrow is out of bounds");
             return;
         }
         gridManager.RemoveItemAt(currentGridPosition);
+        // mark tile as visited
+        gridManager.GetGridCell(currentGridPosition).alreadyVisited = true;
+        
         currentGridPosition = newGridPosition;
         targetPosition = new Vector3(
             currentGridPosition.x * gridManager.cellSize,
@@ -116,12 +120,11 @@ public class PlayerController : MonoBehaviour
         isMoving = true;
 
         Vector3 direction = new Vector3(input.x, 0, input.y);
-        Debug.Log("move playerdirection: " + direction);
         if (direction != Vector3.zero)
         {
             transform.rotation = Quaternion.LookRotation(direction);
         }
-
+    
         gridManager.PlaceItemAt(currentGridPosition, gameObject);
         arrowPlacer.MoveArrowPointsWithPlayer(input, currentGridPosition);
     }
@@ -136,12 +139,12 @@ public class PlayerController : MonoBehaviour
             transform.position.y,
             currentGridPosition.y * gridManager.cellSize
         );
-        animator.SetFloat("Speed", 1);
+        // animator.SetFloat("Speed", 1);
+        animator.SetBool("isFloating", true);
         isMoving = true;
 
         
         Vector3 direction = new Vector3(difference.x, 0, difference.y);
-        Debug.Log("move to arrow direction: " + direction);
         
         // make this rotation relative to the arrow
         if (direction != Vector3.zero)
@@ -164,11 +167,17 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = false;
             animator.SetFloat("Speed", 0);
+            // only set this to false if the player is not moving along the arrow
+            if (!isMovingAlongArrow)
+            {
+                animator.SetBool("isFloating", false);
+            }
         }
     }
 
     void MoveAlongArrow()
     {
+        isMovingAlongArrow = true;
         if (gridManager.GetGridCell(arrowPlacer.passThroughPoints[1].gridPosition).isOccupied && arrowPlacer.passThroughPoints.Count == 2)
         {
             if (gridManager.GetGridCell(arrowPlacer.passThroughPoints[1].gridPosition).item.name == "Goal(Clone)")

@@ -17,6 +17,27 @@ public class GridManager : MonoBehaviour
         // Debug.Log($"Player position: {currentPlayerPosition}");
     }
 
+    void Update()
+    {
+        UpdateTileColor();
+    }
+
+    // if a cell is visited change the color of the tile
+    void UpdateTileColor()
+    {
+        // loop through all cells and change the color of the tile if the cell is visited
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int z = 0; z < gridHeight; z++)
+            {
+                if (gridCells[x, z].alreadyVisited)
+                {
+                    gridCells[x, z].tileGameObject.GetComponent<Renderer>().material.color = Color.red;
+                }
+            }
+        }
+    }
+
     void GenerateGrid()
     {
         for (int x = 0; x < gridWidth; x++)
@@ -59,6 +80,8 @@ public class GridManager : MonoBehaviour
     public void RemoveItemAt(Vector2Int position)
     {
         GridCell cell = GetGridCell(position);
+        Debug.Log("remove item at: " + position);
+        // cell.alreadyVisited = true;
         if (cell != null && cell.isOccupied)
         {
             cell.item = null;
@@ -101,4 +124,5 @@ public class GridCell
     public GameObject tileGameObject;
     public GameObject item;
     public bool isOccupied;
+    public bool alreadyVisited;
 }
