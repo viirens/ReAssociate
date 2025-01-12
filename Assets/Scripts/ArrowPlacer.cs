@@ -15,7 +15,7 @@ public class ArrowPlacer : MonoBehaviour
 
     void Start()
     {
-        PlaceArrow();
+        // PlaceArrow();
         Vector2Int playerPosition = gridManager.GetPlayerPosition();
         // Debug.Log($"Player position: {playerPosition}");
     }

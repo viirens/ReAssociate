@@ -8,6 +8,11 @@ public class GridManager : MonoBehaviour
     public GameObject gridTilePrefab;
 
     private GridCell[,] gridCells;
+    private GridCell lastHighlightedCell;
+    private Color originalTileColor = Color.white;
+    private Color hoverColor = Color.yellow;
+
+    [SerializeField] private GameObject itemToPlace;
 
     void Start()
     {
@@ -20,6 +25,7 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         UpdateTileColor();
+        HandleHover();
     }
 
     // if a cell is visited change the color of the tile
@@ -72,7 +78,8 @@ public class GridManager : MonoBehaviour
         GridCell cell = GetGridCell(position);
         if (cell != null && !cell.isOccupied)
         {
-            cell.item = item;
+            GameObject instantiatedItem = Instantiate(item, cell.tileGameObject.transform.position, Quaternion.identity);
+            cell.item = instantiatedItem;
             cell.isOccupied = true;
         }
     }
@@ -81,9 +88,9 @@ public class GridManager : MonoBehaviour
     {
         GridCell cell = GetGridCell(position);
         Debug.Log("remove item at: " + position);
-        // cell.alreadyVisited = true;
         if (cell != null && cell.isOccupied)
         {
+            Destroy(cell.item);
             cell.item = null;
             cell.isOccupied = false;
         }
@@ -115,6 +122,72 @@ public class GridManager : MonoBehaviour
     public bool PointIsBeyondGrid(Vector2Int point)
     {
         return point.x < 0 || point.x >= gridWidth || point.y < 0 || point.y >= gridHeight;
+    }
+
+    void HandleHover()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            Vector3 hitPosition = hit.point;
+            float gridX = hitPosition.x / cellSize;
+            float gridZ = hitPosition.z / cellSize;
+            
+            
+            Vector2Int gridPosition = new Vector2Int(
+                Mathf.RoundToInt(gridX),
+                Mathf.RoundToInt(gridZ)
+            );
+
+
+            // if actually on the grid
+            if (IsPositionValid(gridPosition))
+            {
+                GridCell hoveredCell = GetGridCell(gridPosition);
+                
+                // if there is a cell at the position
+                if (hoveredCell != null)
+                {
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        Debug.Log("Placing item at: " + gridPosition);
+                        PlaceItemAt(gridPosition, itemToPlace);
+                    }
+
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        Debug.Log("Removing item at: " + gridPosition);
+                        RemoveItemAt(gridPosition);
+                    }
+                    
+                    // if the last highlighted cell is not the same as the hovered cell
+                    if (lastHighlightedCell != null && lastHighlightedCell != hoveredCell)
+                    {
+                        if (!lastHighlightedCell.alreadyVisited)
+                        {
+                            lastHighlightedCell.tileGameObject.GetComponent<Renderer>().material.color = originalTileColor;
+                        }
+                    }
+
+                    // if the hovered cell is not visited
+                    if (!hoveredCell.alreadyVisited)
+                    {
+                        hoveredCell.tileGameObject.GetComponent<Renderer>().material.color = hoverColor;
+                        // PlaceItemAt(gridPosition, itemToPlace);
+                    }
+                    
+                    lastHighlightedCell = hoveredCell;
+                }
+            }
+        }
+        else if (lastHighlightedCell != null && !lastHighlightedCell.alreadyVisited)
+        {
+            lastHighlightedCell.tileGameObject.GetComponent<Renderer>().material.color = originalTileColor;
+            lastHighlightedCell = null;
+        }
     }
 }
 

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2950091527725077196}
   - component: {fileID: 2092416367679031735}
   - component: {fileID: 270977532068884775}
-  - component: {fileID: 7369572433107055387}
+  - component: {fileID: -4615007087851002289}
   m_Layer: 0
   m_Name: TilePrefab
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7369572433107055387
-MeshCollider:
+--- !u!65 &-4615007087851002289
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,7 +102,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 3
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}

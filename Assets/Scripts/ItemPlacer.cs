@@ -17,8 +17,8 @@ public class ItemPlacer : MonoBehaviour
 
     void Start()
     {
-        PlacePlayer();
-        PlaceItems();
+        // PlacePlayer();
+        // PlaceItems();
     }
 
     void PlacePlayer()
